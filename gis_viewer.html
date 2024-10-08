@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cache County GIS Viewer</title>
+    <script>
+        function openGISViewer() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const EARTH_RADIUS_M = 6378137;
+                    const x = EARTH_RADIUS_M * lon * Math.PI / 180;
+                    const y = EARTH_RADIUS_M * Math.log(Math.tan((90 + lat) * Math.PI / 360));
+                    const SCALE = 200;
+                    const url = `https://gis.cachecounty.gov/Websites/Parcel%20and%20Zoning%20Viewer/?center=${x}%2C${y}%2C102100&extent=${x-SCALE}%2C${y-SCALE}%2C${x+SCALE}%2C${y+SCALE}%2C102100`;
+                    window.open(url, '_blank');
+                }, function(error) {
+                    alert("Unable to retrieve location. Make sure location services are enabled.");
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Cache County GIS Viewer</h1>
+    <button onclick="openGISViewer()">Open Viewer with My Location</button>
+</body>
+</html>
